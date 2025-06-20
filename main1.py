@@ -10,6 +10,18 @@ supabase_api_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 database = create_client(supabase_url,supabase_api_key)
 
 
+@app.post("/login")
+def login(username,password):
+    print(username, password)
+    result = database.table("app_users").select("*").eq('user_name',username).eq("password",password).execute()
+    print(result.data)
+    if result.data:
+        return True
+    else:
+        return False
+
+
+
 @app.get("/users")
 def read_users():
     result = database.table("app_users").select('id,name').execute()
